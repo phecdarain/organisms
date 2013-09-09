@@ -13,11 +13,11 @@ public final class Talker implements Player {
   // estimated board size - used for population and p estimation
   public static final int m = 5; 
   public static final int n = 5;
-  public static final double initialEstimatedp = 0.1;
-  public static final double initialEstimatedq = 0.2;
-  public static final int allowFoodToGrowFactor = 2;
+  public static final double initialEstimatedp = 0.01;
+  public static final double initialEstimatedq = 0.02;
+  public static final double allowFoodToGrowFactor = 1.2;
   public static final int minimumMovesFactor = 4;
-  public static final int maxFoodGrowMoves = 10;
+  public static final double maxFoodGrowMovesFactor = 0.1; 
 
 
   // State
@@ -116,7 +116,7 @@ public final class Talker implements Player {
     // Step 1: Check whether we are eating food
     if (foodleft > 0) {
       game.println ("foodleft: " + foodleft);
-      if ((foodleft*u > (M - energyleft) || energyleft < minimumEnergy()) && energyleft < (M-u)) {
+      if ((foodleft*u > (M - energyleft) || energyleft < minimumEnergy()) && energyleft <= (M-u)) {
         game.println ("Filling tank!");
         internalState = EATING_FOOD;
         // fill tank!
@@ -137,7 +137,7 @@ public final class Talker implements Player {
 
           waitMoves = estimateMovesToFoodLevel(allowFoodToGrowFactor);
           game.println ("Estimated wait: " + waitMoves);
-          if (waitMoves > maxFoodGrowMoves) {
+          if (waitMoves > (maxFoodGrowMovesFactor*M)/s) {
             direction = STAYPUT;
           }
           if (direction == STAYPUT) {
@@ -146,6 +146,7 @@ public final class Talker implements Player {
           } else {
             game.println ("Yield farm.");
             internalState = WAITING_FOR_FOOD_TO_GROW;
+            currentWaitMove = 0;
             foodDirection = findOppositeDirection(direction);
           } 
           m = new Move(direction);
@@ -158,7 +159,8 @@ public final class Talker implements Player {
     if (internalState == WAITING_FOR_FOOD_TO_GROW) {
       // check whether the food still exist, otherwise fall through and search for more food
       if (foodpresent[foodDirection]) {
-        if (currentWaitMove >= waitMoves || energyleft < minimumEnergy()) {
+        currentWaitMove++;
+        if ((currentWaitMove >= waitMoves || energyleft < minimumEnergy()) && energyleft <= (M-u)) {
           game.println ("Wait over, eat!");
           m = new Move(foodDirection);
         } else {
@@ -310,11 +312,11 @@ public final class Talker implements Player {
   public double costToStopEatingFood () {
     // find estimated moves to double the food
     double estimatedMoves = estimateMovesToFoodLevel(allowFoodToGrowFactor);
-    double cost = v + (estimatedMoves * s) + minimumEnergy();
+    double cost = 2*v + (estimatedMoves * s);
     return cost;
   }
 
-  public int estimateMovesToFoodLevel (int factor) {
+  public int estimateMovesToFoodLevel (double factor) {
     return (int) (factor/(2*q));
   }
 
