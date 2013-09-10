@@ -115,7 +115,7 @@ public final class Talker implements Player {
 
 
     // Step 1: Check whether we are eating food
-    if (foodleft > 0) {
+    if (foodleft > 0 && internalState != WAITING_FOR_FOOD_TO_GROW) {
       //game.println ("foodleft: " + foodleft);
       foodLevel = foodleft;
       if ((foodleft*u > (M - energyleft) || energyleft < minimumEnergy()) && energyleft <= (M-u)) {
@@ -164,14 +164,16 @@ public final class Talker implements Player {
         currentWaitMove++;
         if ((currentWaitMove >= waitMoves || energyleft < minimumEnergy()) && energyleft <= (M-u)) {
           //game.println ("Wait over, eat!");
+          internalState = EATING_FOOD;
           m = new Move(foodDirection);
         } else {
           //game.println ("Waiting for food to grow.");
           // TODO: for now, reproduce. need a better equation (cost/payoff) for reproduction logic
           if (energyleft > (M-u) && foodLevel*u > (energyleft+v)) {
             //game.println ("Reproduce.");
-            // reproduce onto food tile
-            m = new Move (REPRODUCE, foodDirection, 0);
+            // reproduce onto free tile
+            m = new Move (REPRODUCE, chooseMoveDirection(neighbors), 0);
+            foodLevel = foodLevel - (energyleft+v);
           } else {
             m = new Move(STAYPUT);
           }
