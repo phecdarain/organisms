@@ -111,7 +111,7 @@ public class AttemptSurvivorYang2 implements Player {
 			for (int i = 0; i != 4; i++){
 				int dir = dirMap[i];
 				if (neighbors[dir] >= 0) growthCnt[i] = 0;
-				else if (foodpresent[dir]) growthCnt[i]++;
+				if (foodpresent[dir]) growthCnt[i] = growthCnt[i] + 1;
 			}
 
 			if (energyleft/2 + foodleft * game.u() >= game.M()){
@@ -148,8 +148,10 @@ public class AttemptSurvivorYang2 implements Player {
 				}
 			}
 			else {
-				if (energyleft > game.v() + game.s())
-					m = new Move(STAYPUT);	
+				if (energyleft > game.v() + game.s()){
+					m = new Move(STAYPUT);
+					return m;
+				}
 				else{
 					if (dirMap[longest] == EAST || dirMap[longest] == WEST)
 						lastDir = NORTH;
@@ -170,9 +172,9 @@ public class AttemptSurvivorYang2 implements Player {
 
 		if (energyleft/2 + foodleft * game.u() > M){
 			if (neighbors[NORTH] < 0)
-				m = new Move(REPRODUCE, NORTH, state);
-			else if (neighbors[WEST] < 0)
-				m = new Move(REPRODUCE, WEST, state);
+					m = new Move(REPRODUCE, NORTH, state);
+			else if (neighbors[SOUTH] < 0)
+					m = new Move(REPRODUCE, SOUTH, state);
 			else m = new Move(STAYPUT);
 		}
 		else if ((energyleft < 4*v) || (neighbors[WEST]!=-1) || energyleft > 490) m = new Move(WEST);
