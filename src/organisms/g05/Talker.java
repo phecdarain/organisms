@@ -46,6 +46,7 @@ public final class Talker implements Player {
   private int foodDirection;
   private int currentWaitMove;
   private int waitMoves;
+  private int foodLevel;
 
 
 	/*
@@ -115,9 +116,10 @@ public final class Talker implements Player {
 
     // Step 1: Check whether we are eating food
     if (foodleft > 0) {
-      game.println ("foodleft: " + foodleft);
+      //game.println ("foodleft: " + foodleft);
+      foodLevel = foodleft;
       if ((foodleft*u > (M - energyleft) || energyleft < minimumEnergy()) && energyleft <= (M-u)) {
-        game.println ("Filling tank!");
+        //game.println ("Filling tank!");
         internalState = EATING_FOOD;
         // fill tank!
         m = new Move(STAYPUT);
@@ -125,26 +127,26 @@ public final class Talker implements Player {
         double gainKeepEating = payoffToEatFood() - costToEatFood();
         double gainStopEating = payoffToStopEatingFood(foodleft) - costToStopEatingFood();
 
-        game.println ("Gain keep eating: " + gainKeepEating);
-        game.println ("Gain stop eating: " + gainStopEating);
+        //game.println ("Gain keep eating: " + gainKeepEating);
+        //game.println ("Gain stop eating: " + gainStopEating);
 
         if (gainKeepEating > gainStopEating) {
-          game.println ("Keep eating!");
+          //game.println ("Keep eating!");
           internalState = EATING_FOOD;
           m = new Move(STAYPUT);
         } else {
           int direction = chooseMoveDirection(neighbors);
 
           waitMoves = estimateMovesToFoodLevel(allowFoodToGrowFactor);
-          game.println ("Estimated wait: " + waitMoves);
+          //game.println ("Estimated wait: " + waitMoves);
           if (waitMoves > (maxFoodGrowMovesFactor*M)/s) {
             direction = STAYPUT;
           }
           if (direction == STAYPUT) {
-            game.println ("Keep eating, too many moves!");
+            //game.println ("Keep eating, too many moves!");
             internalState = EATING_FOOD;
           } else {
-            game.println ("Yield farm.");
+            //game.println ("Yield farm.");
             internalState = WAITING_FOR_FOOD_TO_GROW;
             currentWaitMove = 0;
             foodDirection = findOppositeDirection(direction);
@@ -161,20 +163,22 @@ public final class Talker implements Player {
       if (foodpresent[foodDirection]) {
         currentWaitMove++;
         if ((currentWaitMove >= waitMoves || energyleft < minimumEnergy()) && energyleft <= (M-u)) {
-          game.println ("Wait over, eat!");
+          //game.println ("Wait over, eat!");
           m = new Move(foodDirection);
         } else {
-          game.println ("Waiting for food to grow.");
-          m = new Move(STAYPUT);
+          //game.println ("Waiting for food to grow.");
+          // TODO: for now, reproduce. need a better equation (cost/payoff) for reproduction logic
+          if (energyleft > (M-u) && foodLevel*u > (energyleft+v)) {
+            //game.println ("Reproduce.");
+            // reproduce onto food tile
+            m = new Move (REPRODUCE, foodDirection, 0);
+          } else {
+            m = new Move(STAYPUT);
+          }
         }
         return m;
       }
     }
-
-
-
-
-
 
     // if food is around, eat it. otherwise, move.
     for (int i = 1; i < foodpresent.length; i++) {
@@ -182,7 +186,7 @@ public final class Talker implements Player {
         if (energyleft < (M - u)) {
           m = new Move(i); 
         } else {
-          game.println ("Found food. Waiting.");
+          //game.println ("Found food. Waiting.");
           m = new Move(STAYPUT);
         }
         return m;
@@ -194,14 +198,14 @@ public final class Talker implements Player {
     double gainStayNoFood = payoffToStayNoFood() - costToStayNoFood();
     double gainMoveNoFood = payoffToMoveNoFood() - costToMoveNoFood();
 
-    game.println ("Gain Stay No Food: " + gainStayNoFood);
-    game.println ("Gain Move No Food: " + gainMoveNoFood);
+    //game.println ("Gain Stay No Food: " + gainStayNoFood);
+    //game.println ("Gain Move No Food: " + gainMoveNoFood);
 
     if (gainStayNoFood > gainMoveNoFood) {
-      game.println ("STAYPUT!");
+      //game.println ("STAYPUT!");
       m = new Move(STAYPUT);
     } else {
-      game.println ("Move!");
+      //game.println ("Move!");
       m = new Move(chooseMoveDirection(neighbors));
     }
 		return m;
