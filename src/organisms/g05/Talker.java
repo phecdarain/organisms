@@ -146,7 +146,7 @@ public final class Talker implements Player {
         //game.println ("Gain keep eating: " + gainKeepEating);
         //game.println ("Gain stop eating: " + gainStopEating);
 
-        if (gainKeepEating > gainStopEating) {
+        if ((gainKeepEating > gainStopEating) && energyleft < (M-u)) {
           //game.println ("Keep eating!");
           internalState = EATING_FOOD;
           m = new Move(STAYPUT);
@@ -159,7 +159,7 @@ public final class Talker implements Player {
 
           waitMoves = estimateMovesToFoodLevel(allowFoodToGrowFactor);
           //game.println ("Estimated wait: " + waitMoves);
-          if (waitMoves > (maxFoodGrowMovesFactor*M)/s) {
+          if ((waitMoves > (maxFoodGrowMovesFactor*M)/s) && energyleft < (M-u)) {
             direction = STAYPUT;
           }
           if (direction == STAYPUT) {
