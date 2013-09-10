@@ -20,10 +20,13 @@ public final class Talker implements Player {
   public static final double maxFoodGrowMovesFactor = 0.1; 
 
 
-  // State
+  // internal state
   public static final int LOOKING_FOR_FOOD = 0;
   public static final int EATING_FOOD = 1;
   public static final int WAITING_FOR_FOOD_TO_GROW = 2;
+
+  // external state masks
+  public static final int MOVE_WEST = 0x01;
 
 
 	static final String _CNAME = "Chit-Chat";
@@ -113,6 +116,19 @@ public final class Talker implements Player {
 	  moves++;	
 
 
+    // Step 0: Check whether we need to move from this block
+    if (neighbors[EAST] == MOVE_WEST || state == MOVE_WEST) {
+      //game.println ("attempt to move..");
+      int direction =  chooseMoveDirection(neighbors);
+      m = new Move (direction);  
+      if (direction != STAYPUT) {
+        internalState = LOOKING_FOR_FOOD;
+      } else {
+        // transmit state
+        state = MOVE_WEST;
+      }
+      return m;
+    }
 
     // Step 1: Check whether we are eating food
     if (foodleft > 0 && internalState != WAITING_FOR_FOOD_TO_GROW) {
@@ -136,6 +152,10 @@ public final class Talker implements Player {
           m = new Move(STAYPUT);
         } else {
           int direction = chooseMoveDirection(neighbors);
+          // check whether we are trapped
+          if (direction == STAYPUT) {
+            state = MOVE_WEST;
+          }
 
           waitMoves = estimateMovesToFoodLevel(allowFoodToGrowFactor);
           //game.println ("Estimated wait: " + waitMoves);
@@ -172,7 +192,7 @@ public final class Talker implements Player {
           if (energyleft > (M-u) && foodLevel*u > (energyleft+v)) {
             //game.println ("Reproduce.");
             // reproduce onto free tile
-            m = new Move (REPRODUCE, chooseMoveDirection(neighbors), 0);
+            m = new Move (REPRODUCE, foodDirection, 0);
             foodLevel = foodLevel - (energyleft+v);
           } else {
             m = new Move(STAYPUT);
