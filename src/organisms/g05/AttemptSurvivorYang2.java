@@ -101,71 +101,81 @@ public class AttemptSurvivorYang2 implements Player {
 	}
 
 	int[] growthCnt = {0, 0, 0, 0}; 
-	int cntSouth = 0, cntNorth = 0, cntEast = 0, cntWest = 0;
+		
+	public Move survivingMove(boolean[] foodpresent, int[] neighbors, int foodleft, int energyleft) throws Exception {
+		Move m = null;
+		if (foodleft > 0)
+			return new Move(STAYPUT);
+
+		if (4 * (game.v() + .0)/game.s() >= 3 * age + 4)
+			return new Move(STAYPUT);
+
+		int longest = 0;
+		for (int i = 1; i != 4; i++){
+			if (growthCnt[i] > growthCnt[longest])
+				longest = i;
+		}
+
+		if (growthCnt[longest] == 0){
+			int dir = lastDir;
+			if (neighbors[dir] < 0){
+				m = new Move(dir);
+			}
+			else{
+				int otherDir;
+				if (lastDir == WEST)
+					otherDir = NORTH;
+				else otherDir = WEST;
+				if (neighbors[otherDir] < 0)
+					m = new Move(otherDir);
+				else m = new Move(STAYPUT);
+			}
+		}
+		else {
+			if (energyleft > game.v() + game.s()){
+				m = new Move(STAYPUT);
+				return m;
+			}
+			else{
+				if (dirMap[longest] == EAST || dirMap[longest] == WEST)
+					lastDir = NORTH;
+				else lastDir = WEST;
+				m =  new Move(dirMap[longest]);
+			}
+		}
+		for (int i = 0; i != 4; i++)
+			growthCnt[i] = 0;
+		return m;
+
+
+	}
 	public Move move(boolean[] foodpresent, int[] neighbors, int foodleft, int energyleft) throws Exception {
 		Move m = null; // placeholder for return value
 		age ++;
 
-		if (surviving){
-			// count growth around you
-			for (int i = 0; i != 4; i++){
-				int dir = dirMap[i];
-				if (neighbors[dir] >= 0) growthCnt[i] = 0;
-				if (foodpresent[dir]) growthCnt[i] = growthCnt[i] + 1;
-			}
-
-			if (energyleft/2 + foodleft * game.u() >= game.M()){
-				int dir = findEmptySpace(neighbors);
-				if (dir >= 0)
-					return new Move(REPRODUCE, dir, 100);
-				else return new Move(STAYPUT);
-			}
-			if (foodleft > 0)
-				return new Move(STAYPUT);
-
-			if (4 * (game.v() + .0)/game.s() >= 3 * age + 4)
-				return new Move(STAYPUT);
-
-			int longest = 0;
-			for (int i = 1; i != 4; i++){
-				if (growthCnt[i] > growthCnt[longest])
-					longest = i;
-			}
-
-			if (growthCnt[longest] == 0){
-				int dir = lastDir;
-				if (neighbors[dir] < 0){
-					m = new Move(dir);
-				}
-				else{
-					int otherDir;
-					if (lastDir == WEST)
-						otherDir = NORTH;
-					else otherDir = WEST;
-					if (neighbors[otherDir] < 0)
-						m = new Move(otherDir);
-					else m = new Move(STAYPUT);
-				}
-			}
-			else {
-				if (energyleft > game.v() + game.s()){
-					m = new Move(STAYPUT);
-					return m;
-				}
-				else{
-					if (dirMap[longest] == EAST || dirMap[longest] == WEST)
-						lastDir = NORTH;
-					else lastDir = WEST;
-					m =  new Move(dirMap[longest]);
-				}
-			}
-			for (int i = 0; i != 4; i++)
+		
+		// count growth around you
+		for (int i = 0; i != 4; i++){
+			int dir = dirMap[i];
+			if (neighbors[dir] >= 0) {
 				growthCnt[i] = 0;
-			return m;
-
-
+				surviving = false;
+				
+			}
+			if (foodpresent[dir]) growthCnt[i] = growthCnt[i] + 1;
+		}
+		if (energyleft/2 + foodleft * game.u() >= game.M()){
+			surviving = false;
+			int dir = findEmptySpace(neighbors);
+			if (dir >= 0)
+				return new Move(REPRODUCE, dir, 100);
+			else return new Move(STAYPUT);
+		}
+		if (surviving){
+			return survivingMove(foodpresent,neighbors, foodleft, energyleft);
 		}
 
+		
 		int v = game.v();
 		int M = game.M();
 
@@ -181,58 +191,7 @@ public class AttemptSurvivorYang2 implements Player {
 		else m = new Move(STAYPUT);
 
 		return m;
-		/*
-		if (energyleft/2 + foodleft * game.u() > game.M()){
-			int dir = findEmptySpace(neighbors);
-			if (dir >= 0)
-				return new Move(REPRODUCE, dir, 100);
-			else return new Move(STAYPUT);
-		}
-
-		if (foodleft > 0)
-			return new Move(STAYPUT);
-
-		for (int i = 0; i != 4; i++){
-			if (foodpresent[dirMap[i]])
-				return new Move(dirMap[i]);
-		}
-
-
-		int dir = rand.nextInt(2);
-		return new Move(dirMap[dir]);
-		 */
-		/*
-		if (neighbors[EAST] >= 0)
-			return new Move(EAST);
-
-		if (neighbors[NORTH] >= 0)
-			return new Move(NORTH);
-		 */
-
-
-		//		return new Move(STAYPUT);	
-
-
-		/*		
-		int direction = rand.nextInt(6);
-
-		switch (direction) {
-		case 0: m = new Move(STAYPUT); break;
-		case 1: m = new Move(WEST); break;
-		case 2: m = new Move(EAST); break;
-		case 3: m = new Move(NORTH); break;
-		case 4: m = new Move(SOUTH); break;
-		case 5:	direction = rand.nextInt(4);
-		// if this organism will reproduce:
-		// the second argument to the constructor is the direction to which the offspring should be born
-		// the third argument is the initial value for that organism's state variable (passed to its register function)
-		if (direction == 0) m = new Move(REPRODUCE, WEST, state);
-		else if (direction == 1) m = new Move(REPRODUCE, EAST, state);
-		else if (direction == 2) m = new Move(REPRODUCE, NORTH, state);
-		else m = new Move(REPRODUCE, SOUTH, state);
-		}
-		 */
-
+		
 	}
 
 
