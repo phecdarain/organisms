@@ -15,7 +15,7 @@ public final class Talker implements Player {
   public static final int n = 5;
   public static final double initialEstimatedp = 0.01;
   public static final double initialEstimatedq = 0.02;
-  public static final double allowFoodToGrowFactor = 1.2;
+  public static final double allowFoodToGrowFactor = 0.5;
   public static final int minimumMovesFactor = 4;
   public static final double maxFoodGrowMovesFactor = 0.1; 
 
@@ -321,7 +321,7 @@ public final class Talker implements Player {
   }
 
   public int estimateMovesToFoodLevel (double factor) {
-    return (int) (factor/(2*q));
+    return (int) (factor/q);
   }
 
   /*
