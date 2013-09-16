@@ -14,6 +14,7 @@ public class Utils implements Player {
 
 	public final static int[] dirMap = {NORTH,WEST,SOUTH,EAST};
 	
+	
 	public final static int localNORTH = 0;
 	public final static int localWEST = 1;
 	public final static int localSOUTH = 2;
