@@ -13,11 +13,27 @@ import organisms.Player;
 public class Utils implements Player {
 
 	public final static int[] dirMap = {NORTH,WEST,SOUTH,EAST};
+	public final static int code = 0x55;
 	
 	public final static int localNORTH = 0;
 	public final static int localWEST = 1;
 	public final static int localSOUTH = 2;
 	public final static int localEAST = 3;
+	
+	public static boolean isEnemy(int num){
+		if (num < 0)
+			return false;
+		else return num != Utils.code;
+	}
+	
+	public static boolean enemyAround(int[] neighbors){
+		for (int i = 0; i != 4; i++){
+			int dir = dirMap[i];
+			if (isEnemy(neighbors[dir]))
+				return true;
+		}
+		return false;
+	}
 	
 	public static int findEmptySpace(int[] neighbors){
 		for (int i = 0; i != 4; i++){
