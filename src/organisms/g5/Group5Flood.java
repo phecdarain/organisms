@@ -1,4 +1,4 @@
-package organisms.g05;
+package organisms.g5;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -8,9 +8,9 @@ import organisms.Move;
 import organisms.OrganismsGame;
 import organisms.Player;
 
-public class AttemptCompeteYang extends AttemptSurvivorYang3 {
+public class Group5Flood extends Group5Survivor {
 
-	static final String _CNAME = "The Survivor Competing";
+	static final String _CNAME = "Flood";
 	static final Color _CColor = new Color(0f, 0f, 1f);
 
 	private int lastDir = 0;
