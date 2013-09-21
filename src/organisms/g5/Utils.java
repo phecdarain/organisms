@@ -13,7 +13,7 @@ import organisms.Player;
 public class Utils implements Player {
 
 	public final static int[] dirMap = {NORTH,WEST,SOUTH,EAST};
-	public final static int code = 0x55;
+	public final static int code = 0x15;
 	
 	public final static int localNORTH = 0;
 	public final static int localWEST = 1;
