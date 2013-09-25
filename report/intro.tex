@@ -1,1 +1,28 @@
 \section{Introduction}
+
+This report describes our approach and observations while working on the 
+{\em Organisms} simulation problem. The simulation is a class of popular
+{\em Discrete Cellular Automaton} model, similar in spirit to 
+{\em Conway's Game of Life}.
+
+The simulation world is a finite grid in which virtual organisms occupy 
+individual cells in the grid. These virtual organisms can choose to move, 
+eat or reproduce in each discrete cycle of the simulation. They are also 
+able to "see" their neighboring cells and are thus able to sense the presence 
+of food and/or other organisms. The simulation is subject to various rules 
+and  constraints. Each organism has finite energy and there is a cap on 
+maximum energy a organism can accumulate. Energy is replenished by consuming 
+food and it is consumed in every cycle depending on organism's action - 
+i.e. moving, reproducing or even staying still consumes some finite amount 
+of energy.  An organism ceases to exist when it's energy level drops to zero.
+Food may appear on any empty cell in the simulation world with some finite
+probablility and it may increase by a unit with some finite probability. 
+These probabilities are not known to the organism. The maximum amount of 
+food that is available in any cell is also bound to a finite number. 
+An organism may also "communicate" with nearby organisms by broadcasting an 
+external state, that can used in a versatile manner.
+The simulation can be run in single-species mode or multiple-species mode. 
+The winning conditions are not concretely defined but some of the factors 
+that can be considered while judging a winning strategy can be 
+average energy per organism, average extinction rate, total number of
+organisms for a species vis-a-vis other species etc.

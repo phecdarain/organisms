@@ -49,7 +49,7 @@ distclean: clean
 
 %.pdf: $(wildcard *.tex) $(wildcard *.bib)
 	$(LATEX) $*
-	bibtex $*
+	#bibtex $*
 	$(LATEX) $*
 	if [ -e $*.toc ] ; then $(LATEX) $* ; fi
 	if [ -e $*.bbl ] ; then $(LATEX) $* ; fi
