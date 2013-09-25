@@ -1,0 +1,37 @@
+\subsubsection{Surviving Mode}
+One thing we noticed is that for harsh environment(p = 0.1\%), the
+organism will easily extinct if moving around too much, especially at
+the beginning of game.  However, if we are able to let the food to
+grow for a while, the board will become abundant, which then allows
+the organism to make some move and maximize total power.  Basically,
+we attempt to help our organism \textit{Survive} the beginning couple
+hundred rounds(Stage One) and switch to energy miximizing mode(Stage
+Two). Note that the surviving mode is just one layer put at the
+beginning of the game. At some point(details in Implementation), when
+organism enters stage two, \textit{any} algorithm for maximizing energy could
+be invoked. The two stages are totally decoupled.
+
+\textbf{Move or stay.}  During this surviving mode, apparently,
+reproduce is not a good action.  The energy spliting makes the
+origanism weak and cost of stayput will doubled.  The question
+remained to be whether the organism should just stay, waiting for food
+to appear in the neighbor cells or move around to explore food. We
+answer this question by introducing a probabilistic analysis over the
+benefit of moving or stay.  More specifically, we will calculate the
+probability of finding food when you move and compare it with the
+probablity of finding food if those energy are used to stayput and
+wait, so as to determine the best action in each round.
+
+\textbf{Eat or wait.} The idea above is focusing on finding one food.
+But once a food is found in neighbor cell, shall the organism just go
+ahead and eat it or wait for as long as it can. Our answer is the
+later, based the following three reasons.
+\begin{enumerate}
+\item This is single player mode, no one will appear and rob the food
+  away.
+\item The goal of this stage is to survive the beginning harsh
+  environment, waiting is more suitable to this.
+\item The expectation of food on that cell grows exponential to the
+  time you wait(more details in Implementation).
+\end{enumerate}
+
