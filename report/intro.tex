@@ -41,12 +41,25 @@ up with mathematical equations to determine the "utility" of making a move,
 consuming food, moving or staying still in each cycle of the simulation. 
 The utility functions allowed us to choose the "best" move for an organism. 
 
-However, the release of {\em "Sheep"} player from the previous 
+However, the release of {\em "Sheep"} organism from the previous 
 undertaking of this class completely changed our thinking of this game. 
 We realized that our strategies were not agile enough to adapt to 
-multi-species simulations and our organism species were being constantly 
-starved into extinction by the fairly aggressive reference player. 
-We discarded the old approach in favor of the newer {\em "Flood"} based 
-approach, which aimed to reproduce quickly in the simulation arena so as 
-to avoid possible extinction by other players. 
-
+multi-species simulations and our organism species was being constantly 
+starved into extinction by a fairly aggressive reference organism species. 
+We discarded the old approaches in favor of a {\em "Flood"} based 
+approach, which aimed to reproduce effectively in the simulation arena so as 
+to avoid possible extinction by other organisms. To achieve balance, an 
+organism initially tended to stay at one place, then it transformed to 
+aggressive behavior and the older it got, it again preferred to stay at one 
+place. 
+We found this implementation to be quite effective against multi-species 
+simulations and our implementation was even able cause extinction of the 
+reference {\em "Sheep"} organism in all scenarios, even in the scenarios 
+when it was outnumbered by 1:5 initially at the start of simulation.
+On the side, we also took cues from strategies used by other groups in the 
+class and we particularly noticed that structured/patterned farming colony 
+approaches were quite effective in increasing average energy of the 
+organisms. We also implemented a {\em "Pattern-Maker"} organism brain which 
+tried to form structured farming colonies, so as to achieve the sustainable 
+balance between number of organisms in the simulation and food growth rate. 
+We found this implementation quite effective in single-species simulation. 
