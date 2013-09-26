@@ -1,0 +1,42 @@
+\subsection{Surviving Mode}
+Recall that the goal of this surviving mode is to live through 
+the beginning stage of the game, when there are very little food on the ground
+and switch to the mode that maximize energy(pattern maker).
+
+\textbf{Move or stay.} To determine whether it is better to stay where we are or 
+to move, we try to calculate the payoff of each actions. 
+More specifically, we will calculate the probability of \textit{not} finding 
+any food if (a) spend $v$ energy to move or (b) say the energy to stay for $\frac{v}{s}$.
+Assume the organism has already wait for $t$ time and there is still 
+no food observed in the neighbor cells. 
+\begin{itemize}
+\item If moving, in the next round, the organism will be able to see three new cells each having probability of $(1-p)^{t+1}$ of no food grown.
+Remember that the organism leave the original cell at time(round) $t$, 
+which allows food to grow on this cell at $t+1$ round.
+Therefore, overall, the probability of finding no food after move is $(1-p)^{3(t+1)+1}$,
+i.e., probability of no food observed on the three new cells and no food grows on the original cell.
+
+\item If stay for $\frac{v}{s}$ rounds, each round, the probability of no food grows in each of the
+four neighbor cells is $(1-p)$. 
+Thus the overall probability of no food observed after those rounds is $(1-p)^{\frac{4v}{s}}$.
+\end{itemize}
+According to the above analysis, apparently, the organism should stay at the beginning 
+until the time $3(t+1)+1 > \frac{4v}{s}$($(1-p)$ is smaller than $1$, thus larger index yields 
+smaller probability). 
+Note that an interesting property of this formula is that the analysis depends on $p$ 
+while the final formula itself does not, which is important in this case since $p$ is not given.
+Once the organism starts moving, it won't stop and will keep following one direction, simply 
+because make any turn will lose the chance to see an entirely new cell.
+
+\textbf{Eat or wait.} Once the organism find a food nearby, it will wait for as long as it can, 
+and then eat the food. The three reasons of this has already been discussed in previous section.
+Now we briefly explain why the expected amount of food is exponential to the time you wait(more specifically, $(1+q)^t$).
+Note that this is not concrete proof, just reasoning by intuition.
+First of all, the simplest case, when there is one food, in the next round, the expectation is $q \times 2 + (1-q) \times 1 = 1 + q$.
+Using induction, at time $t$, assume the expectation of food is $(1+q)^t$. 
+The expectation could be written as $\sum_i p_i \times i$ where $p_i$ is the probability of there being $i$ food on cell. For $i$ food, each of them has expectation to $1+q$, with summing up being $i \times (1+q)$. The expectation on $\sum_i p_i \times i$ now becomes $\sum_i p_i \times i \times (1+q)$. Therefore, after time $t+1$, the expectation of food is $(1+q)^{t+1}$.
+
+
+\textbf{Switch mode.} In the current implementation, when $energyleft + foodleft x u > 2M$.
+In other word, if there is enough energy for both this organism and the child it (could) reproduces.
+

@@ -1,0 +1,30 @@
+\subsubsection{Flood}
+Our multiple-player organism is named \textit{Flood}, which comes from the flooding behavior of the strategy. 
+
+\textbf{Generations.} We defined three \textit{generations} for this strategy, determined by the amount of energy left,
+playing different roles for the whole organism family.
+\begin{itemize}
+\item[Gen 0:] Aggressively move, rob food and reproduce. (E.g., the very initial organism(the mother).)
+\item[Gen 1:] Mildly expand, search food, reproduce if energy is high enough.
+\item[Gen 2:] Stay quietly, only move if food around. If find more than one friend around, try moving away and be sparse looking.
+\end{itemize}
+Generation $0$ is attempting to spread out as fast as possible, find more food, cover more ground.
+Generation $1$ is in between, not so aggressive, but also not really quiet.
+Generation $2$ will stay for most of the time, attempting to defend the zone covered and absorb resource on it.
+
+\textbf{Stay Sparse.} We want to highlight our strategy for generation $2$ of being spare here. 
+We believe that we are the very first group to actually point this out.
+There are lots of advantages of such action.
+\begin{enumerate}
+\item Use less organism to cover more places.
+\item The empty space in between can be treated as some sort of farm, making the coverage more sustainable.
+\item Each organism has a chance to see more empty block around, provides it more chance to survive and hold the area. 
+\end{enumerate}
+
+\textbf{Genetic Mutation.} The key trick of this player is that, we enable mutation for the organisms based on the energy it has. 
+For instance, if a generation $2$ organism finds a cell with lots of food, then it has enough energy to be aggressive and will thus mutate to generation 0.
+Such strategy allows the family to form a self-balanced ecosystem. 
+When organisms have low energy, they will stay still and try to stay as long as possible and wait for chance.
+When some organism has high energy, they will attempt to expand, use the extra energy to cover more ground and to suffocate the enemies. 
+
+\textbf{Block Enemy.} For any generation, if observe enemy in neighbor cell, it will stay still, attempt to block the action of that enemy and only move if observing food.

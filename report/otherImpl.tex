@@ -1,0 +1,8 @@
+\subsection{Other Implementation Highlights}
+\textbf{Directions.} Instead of directly store and use the direction constant 
+given by the simulator, we have a private lib which is essentially built on an array 
+representation of the four directions. 
+The most important advantage is that we can use for loop when we need to check all directions
+instead of having a switch and handle each direction individually.
+This makes our code much more compact and make it easy to have util-functions like check if there 
+is food(enemy) around, left, right, reverse of a given direction, etc.

@@ -1,0 +1,16 @@
+\subsection{Flood}
+Recall that flood is our multi-player strategy that having three generations, which can be mutated from one to another, allowing the whole family to switch between being aggressively or being quietly depending on different scenarios they encounter.
+
+\textbf{Reproduction.} To cover the board as fast as possible, when an organism reproduce, we use the strategy of one north(east) and one south(west). 
+Remember that the newly reproduced organism will following the same rule, 
+which is essentially how we achieve the goal of exploring all directions simultaneously.
+The condition for an organism to reproduce is simply a check on its energyleft.
+If having more than 40\% of $M$(which turns out to be not robust when $M$ is set low, more details in Analysis section), the organism will reproduce to the direction following the rule we just described.
+
+\textbf{Genetic Mutation.} The mutation is achieved by checking the energyleft of the organism. 
+In the current implementation, it is Gen 0: $> 80\% M$, Gen 1: $60\%M - 80\%M$, Gen 2: $< 20\%M$.
+Such implementation turns out to be both clean and efficient.
+
+\textbf{Detect Enemy.} We use same external state for all of our organisms which allows us to identify the organism appears in the neighbor cell is a friend or not. The value of such state is picked arbitrary and currently hard coded.
+
+\textbf{Keep Spare.} Based on the enemy detection method above, the organism is now able to check number of friends around. If there are more than one friends, then it will try to move and stay away from each other. In addition, the organism always remember the last direction it moves so as to avoid stepping back and forth and waste energy.
