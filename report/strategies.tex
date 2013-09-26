@@ -2,7 +2,9 @@
 \label{sec:strategies}
 
 \subsection{Single Player}
-After identifying four tenets for guiding organism development, we attempted to build strategies that would account for the variable elements inherent to the Organisms board, including:
+After identifying four tenets for guiding organism development, we
+attempted to build strategies that would account for the variable
+elements inherent to the Organisms board, including:
 
 \begin{itemize}
 \item	p--probability of spontaneous food appearance
@@ -14,26 +16,47 @@ After identifying four tenets for guiding organism development, we attempted to 
 \item	m,n--board size
 \end{itemize}
 
-The first strategy we developed aimed to qualify the third insight: stay still when advantage of moving is unclear.  To do this, we planned to develop thresholds for each behavior, effectively quantifying the relative value of moving, reproducing, and staying put.  A mathematical approach quickly revealed that these thresholds would be functions of p and q.
+The first strategy we developed aimed to qualify the third insight:
+stay still when advantage of moving is unclear.  To do this, we
+planned to develop thresholds for each behavior, effectively
+quantifying the relative value of moving, reproducing, and staying
+put.  A mathematical approach quickly revealed that these thresholds
+would be functions of p and q.
 
-Having found this, we elected to design an organism behavior that would communally measure these variables.  To do this, we developed the Talker, an organism which observed board conditions and relayed those conditions, along with an indicator of the data quality, back to the other organisms on the board.
+Having found this, we elected to design an organism behavior that
+would communally measure these variables.  To do this, we developed
+the Talker, an organism which observed board conditions and relayed
+those conditions, along with an indicator of the data quality, back to
+the other organisms on the board.
 
 
 \subsubsection{Talker}
 
-The talker was effectively a proof-of-concept--while it did successfully relay board conditions, albeit only approximately, we soon realized that a pattern-based strategy was better suited for a single-player board. The implementation started
-with some initial estimation of probability of food appearing and the probability of food doubling. An organism initially
-started in food scavenging mode. It used utility functions to estimate expected pay-off in staying at one location vs. 
-moving and looking for food. As the time passed, the organism tended to move and look for food. When an organism discovers
-food, it tried to estimate the number of moves it needed to wait for the food to increase by certain amount, essentially 
-transforming it's behavior to farming. Reproduction decisions were taken based on the amount of available food, i.e. if 
-the organism felt that the amount of food on the board is sufficient to sustain itself and it's offspring, it would reproduce.
-Moreover, all the organisms preferred to move in the WEST direction, whenever they want to and preferred reproducing in the 
-south direction.  It is interesting to note that the resulting layout closely resembled "checkerboard" pattern once it 
-converged, with organisms on all sides of cells containing food. This strategy was quite wasteful when the simulation 
-arena had plenty of food.  This realization became apparent when trying to calculate the maximum sustainable energy of 
-the board. To calculate this, we assume that each organism is adjacent to exactly one farm.  In this case, there are 355 
-organisms under normal conditions:
+The Talker was effectively a proof-of-concept--while it did
+successfully relay board conditions, albeit only approximately, we
+soon realized that a pattern-based strategy was better suited for a
+single-player board. The implementation started with some initial
+estimation of probability of food appearing and the probability of
+food doubling. An organism initially started in food scavenging
+mode. It used utility functions to estimate expected pay-off in
+staying at one location vs.  moving and looking for food. As the time
+passed, the organism tended to move and look for food. When an
+organism discovers food, it tried to estimate the number of moves it
+needed to wait for the food to increase by certain amount, essentially
+transforming it's behavior to farming. Reproduction decisions were
+taken based on the amount of available food, i.e. if the organism felt
+that the amount of food on the board is sufficient to sustain itself
+and it's offspring, it would reproduce.  Moreover, all the organisms
+preferred to move in the WEST direction, whenever they want to and
+preferred reproducing in the south direction.  It is interesting to
+note that the resulting layout closely resembled "checkerboard"
+pattern once it converged, with organisms on all sides of cells
+containing food. This strategy was quite wasteful when the simulation
+arena had plenty of food.  This realization became apparent when
+trying to calculate the maximum sustainable energy of the board. To
+calculate this, we assume that each organism is adjacent to exactly
+one farm.  In this case, there are 355 organisms under normal
+conditions:
 \begin{verbatim}
 	Total number of cells			=	400
 	Number of Farms	=	400 / 9 	= 	45
