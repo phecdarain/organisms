@@ -32,7 +32,7 @@ Our group came up with various approaches to the simulation and depending on
 results, we pivoted a few times. Initially, our approach focused primarily 
 to maximize the average energy. We developed an organism brain which used
 different {\em threshold} levels to decide whether to move, reproduce or to 
-stay still. This implementation was designed assuming fairly high probability
+stay still. The implementation assumed fairly high probability
 of food appearing on the board. However, the strategy fell flat in conditions 
 where food was scarce. We then implemented a strategy in which the organisms 
 tried to gauge the probability of food appearing and doubling, either 
@@ -44,6 +44,9 @@ The utility functions allowed us to choose the "best" move for an organism.
 However, the release of {\em "Sheep"} player from the previous 
 undertaking of this class completely changed our thinking of this game. 
 We realized that our strategies were not agile enough to adapt to 
-multi-species simulations and was being constantly starved into extinction 
-by the fairly aggressive reference player. 
+multi-species simulations and our organism species were being constantly 
+starved into extinction by the fairly aggressive reference player. 
+We discarded the old approach in favor of the newer {\em "Flood"} based 
+approach, which aimed to reproduce quickly in the simulation arena so as 
+to avoid possible extinction by other players. 
 
