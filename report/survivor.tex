@@ -35,3 +35,29 @@ later, based the following three reasons.
   time you wait(more details in Implementation).
 \end{enumerate}
 
+Clearly, the surviving approach we proposed above is aiming at
+achieving highest probability of finding food for each individual
+step.  In other word, a greedy algorithm.  Now we introduce the
+dynamic programming(DP) based solution for optimizing the overall
+probability(instead of one single move). Due to the time limit,
+we were not able to implement or test it, but the correctness 
+and optimality of the algorithm is clear.
+
+\textbf{Dynamic Programming.} Define $P(t,e)$ to be the lowest possible 
+probability of not finding any food in round $t$ with $e$ energy
+left. The state transform function will be the following:
+
+\begin{align*}
+P(t,e) = \min\{P(t-1,e+s) \times (1-p)^4, P(t-1, e+v) \times (1-p)^{3t + 1}\}
+\end{align*}
+In other word, lowest probability of having $e$ energy left at round
+$t$ is coming from the better case of the following two: (a) having
+$e+s$ energy at round $t-1$ and spend $s$ to stay, the additional case
+of not finding food is no food grown in any of the neighbor cells. (b)
+having $e+v$ energy at round $t-1$ and spend $v$ to move, the
+additional case of not finding food is no food observed on any of the three fresh
+cells as well as no food grown on the original cell.
+
+Apparently, the muliplication can be replaced by addition of index and
+change min to max, so as to avoid knowing $p$.
+
