@@ -2,7 +2,42 @@
 \label{sec:strategies}
 
 \subsection{Single Player}
+After identifying four tenets for guiding organism development, we attempted to build strategies that would account for the variable elements inherent to the Organisms board, including:
+
+\begin{itemize}
+\item	p--probability of spontaneous food appearance
+\item	q--probability of food doubling
+\item	v--energy consumed by moving or reproducing
+\item	u--energy per unit of food
+\item	M--maximum energy per organism
+\item	K--maximum food units per cell
+\item	m,n--board size
+\end{itemize}
+
+The first strategy we developed aimed to qualify the third insight: stay still when advantage of moving is unclear.  To do this, we planned to develop thresholds for each behavior, effectively quantifying the relative value of moving, reproducing, and staying put.  A mathematical approach quickly revealed that these thresholds would be functions of p and q.
+
+Having found this, we elected to design an organism behavior that would communally measure these variables.  To do this, we developed the Talker, an organism which observed board conditions and relayed those conditions, along with an indicator of the data quality, back to the other organisms on the board.
+
+
+\subsubsection{Talker}
+\TODO{[DESCRIBE STRATEGY IN-DEPTH HERE]}
+
+The talker was effectively a proof-of-concept--while it did successfully relay board conditions, albeit only approximately, we soon realized that a pattern-based strategy was better suited for a single-player board.
+
+This realization became apparent when trying to calculate the maximum sustainable energy of the board. To calculate this, we assume that each organism is adjacent to exactly one farm.  In this case, there are 355 organisms under normal conditions:
+\begin{verbatim}
+	Total number of cells			=	400
+	Number of Farms	=	400 / 9 	= 	45
+	Number of Organisms = 	400 - 45	= 	355
+\end{verbatim}
+
+If this is the case, and each organism can maintain maximum energy, the maximum sustainable board energy is 177,500
+\begin{verbatim}
+	Total Number of Organisms * Max Energy Per Organism = 177,500
+\end{verbatim}
+
 \input{patternMaker}
+
 \input{survivor}
 
 \subsection{Multiple Player}

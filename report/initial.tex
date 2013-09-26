@@ -1,2 +1,33 @@
 \section{Initial Insights and Observations}
 \label{sec:initial}
+The initial challenge of this class was to beat RandomPlayer, an organism which moves and reproduces randomly.  A number of incremental improvements occurred to us in the first round of brainstorming:
+\begin{itemize}
+\item A simple greedy strategy would consistently beat RandomPlayer.  This strategy would always move onto food in adjacent squares:
+\begin{verbatim}
+for (i=0 to 4) {
+    if foodPresent[i] {
+        move in direction i;
+    } else move in random direction;
+}
+\end{verbatim}
+
+\item A consistent movement strategy would always consistently beat RandomPlayer.  This strategy would consistently move in one direction, stopping to eat, and consistently reproduce in another direction.
+    
+\begin{verbatim}
+	if (foodLeft>0) stayput;
+	else if ((randInt from 0 to 10)==1) reproduce North;
+	else move west;
+\end{verbatim}
+
+\item Staying still is very cheap relative to movement.  A greedy strategy like the one above the else condition resulting in stayPut rather than random movement is superior.
+
+\item Food tends to multiply faster than it appears.  This means that there is an advantage on a single-player board to waiting for a number of rounds before beginning to move with one of the strategies above.
+\end{itemize}
+
+Essentially, we used these four insights to guide all of our future strategies:
+\begin{enumerate}
+\item Greedy strategies work
+\item Movement should be controlled and deliberate
+\item Stay still when advantage to moving is unclear
+\item Allow food to accumulate to increase total board energy
+\end{enumerate}
