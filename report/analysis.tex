@@ -2,7 +2,45 @@
 \label{sec:analysis}
 \subsection{Single Player}
 While Talker did effectively communicate board conditions, it was never tested extensively.  Instead, we focused singleplayer testing on PatternMaker.  Some of the results are shown in the table below:
-\TODO{[RESULTS TABLE, TO BE GENERATED]}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\# of Trials & \# of Rounds & Conditions & Average  & Average \\
+             &              &            & End Energy & End Organism Count\\
+\hline
+5            & 500,000      & Standard  &  170,031   & 381\\
+             &              & (20x20, p=.01, q=.02)  &  (95.79\% of theoretical max) & \\
+\hline
+5 & 100,000 & Large  & 1,027,110  & 2330\\
+             &              & (50x50, p=.01, q=.02) &  (92.4\% of theoretical max) & \\
+\hline
+\end{tabular}
+\end{table}
+Testing showed that the algorithm is still partially flawed: while the
+theoretical maximum is unachievable in practice because of conflicting
+patterns due to the board’s overlapping boundaries, it is clear that
+the current algorithm has a flawed reproduction function: only 355
+organisms should be spawned on a 20x20 board; the observed average
+organism count was 381.
+
+It should also be noted that the average energy per organism on the
+small board was 446.26.  Given an ideal patterning algorithm with a
+thirty-two-round movement cycle, each organism should have an
+theoretical average energy of 475; this threshold was also not
+sufficiently met.  Further optimisation may make approaching this
+threshold possible, although the randomness associated with food
+generation would make meeting it completely also impossible.
+
+The larger board performed slightly more poorly, reaching only 92.4\%
+board saturation after 100,000 rounds.  However, the total energy of
+the board was still observed to be growing after 100,000 rounds: the
+asymptote of the growth function likely approaches the percentage of
+total potential energy observed on the smaller board.
+
+
+
 
 \subsection{Multi-player}
 Note that our submitted multi-player strategy is focused specifically on the default setup.
